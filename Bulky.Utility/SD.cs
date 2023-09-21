@@ -12,5 +12,17 @@ namespace Bulky.Utility
         public const string Role_Admin = "Admin";
         public const string Role_Company = "Company";
         public const string Role_Employee = "Employee";
-    }
+
+		public const string Status_Pending = "Pending";
+		public const string Status_Approved = "Approved";
+		public const string Status_InProcess = "Processing";
+		public const string Status_Shipped = "Shipped";
+		public const string Status_Cancelled = "Cancelled";
+		public const string Status_Refunded = "Refunded";
+
+		public const string PaymentStatusPending = "Pending";
+		public const string PaymentStatusApproved = "Approved";
+		public const string PaymentStatusDelayedPayment = "Approved For Delayed Payment";
+		public const string PaymentStatusRejected = "Rejected";
+	}
 }
