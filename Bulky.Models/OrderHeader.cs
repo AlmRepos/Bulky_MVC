@@ -18,18 +18,26 @@ namespace Bulky.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public DateTime OrderDate { get; set; }
+
         public DateTime ShippingDate { get; set; }
+        
         public double OrderTotal { get; set; }
 
+        
         public string? OrderStatus { get; set; }
+        
         public string? PaymentStatus { get; set; }
 
+        
         public string? TackingNumber { get; set; }
+        
         public string? Carrier { get; set; }
 
         public DateTime PaymentDate { get; set; }
+        
         public DateTime PaymentDueDate { get; set; }
 
+        public string? SessionId { get; set; }
         public string? PaymentIntentId { get; set; }
 
         [Required]
