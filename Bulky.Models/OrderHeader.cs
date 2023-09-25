@@ -29,7 +29,7 @@ namespace Bulky.Models
         public string? PaymentStatus { get; set; }
 
         
-        public string? TackingNumber { get; set; }
+        public string? TrackingNumber { get; set; }
         
         public string? Carrier { get; set; }
 

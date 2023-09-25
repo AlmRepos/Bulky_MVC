@@ -89,7 +89,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-			ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == userId,includeproperties: "product");
+			ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.
+                GetAll(s => s.ApplicationUserId == userId,includeproperties: "product");
 
             ShoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
@@ -164,9 +165,6 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 var service = new SessionService();
                 Session session = service.Create(options);
 
-                var id = session.Id;
-
-
                 _unitOfWork.OrderHeader.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
                 _unitOfWork.Save();
 
@@ -199,7 +197,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             }
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
-                .GetAll(c => c.ApplicationUserId == ShoppingCartVM.OrderHeader.ApplicationUserId).ToList();
+                .GetAll(c => c.ApplicationUserId == order.ApplicationUserId).ToList();
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
 
