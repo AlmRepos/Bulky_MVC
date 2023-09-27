@@ -208,7 +208,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
 		public IActionResult Plus(int id)
         {
-            ShoppingCart cart = _unitOfWork.ShoppingCart.GetOne(c => c.Id == id);
+            ShoppingCart cart = _unitOfWork.ShoppingCart.GetOne(c => c.ShoppingCartId == id);
 
             cart.Count += 1;
             _unitOfWork.ShoppingCart.Update(cart);
@@ -221,11 +221,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Minus(int id)
         {
-            ShoppingCart cart = _unitOfWork.ShoppingCart.GetOne(c => c.Id == id);
+            ShoppingCart cart = _unitOfWork.ShoppingCart.GetOne(c => c.ShoppingCartId == id);
 
             if(cart.Count == 1)
             {
                 _unitOfWork.ShoppingCart.Remove(cart);
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == cart.ApplicationUserId).Count() - 1);
             }
             else
             {
@@ -241,8 +242,9 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Remove(int id)
         {
-            ShoppingCart cart = _unitOfWork.ShoppingCart.GetOne(c => c.Id == id);
+            ShoppingCart cart = _unitOfWork.ShoppingCart.GetOne(c => c.ShoppingCartId == id);
             _unitOfWork.ShoppingCart.Remove(cart);
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == cart.ApplicationUserId).Count() - 1);
             _unitOfWork.Save();
 
             return RedirectToAction(nameof(Index));

@@ -1,5 +1,6 @@
 ﻿using Bulky.DataAccess.IRepository;
 using Bulky.Models;
+using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -21,7 +22,18 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll().ToList();
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            //if (claim != null)
+            //{
+            //    HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == claim.Value).Count());
+            //}
+            //else
+            //{
+            //    HttpContext.Session.Clear();
+            //}
+            IEnumerable<Product> products = _unitOfWork.Product.GetAll().ToList();
 
             return View(products);
         }
@@ -59,16 +71,23 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             if (fromdb != null)
             {
+                //shopping cart exist 
                 fromdb.Count += shoppingCart.Count; // this line will update the object automatically
                 _unitOfWork.ShoppingCart.Update(fromdb);
+                _unitOfWork.Save();
             }
             else
             {
-                shoppingCart.Id = 0;
+                // add cart record
+
+                //shoppingCart.Id = 0;
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserId == userId).Count());
             }
+
+            
             TempData["success"] = "Cart Updated Successfully";
-            _unitOfWork.Save();
 
             return RedirectToAction(nameof(Index));
         }
