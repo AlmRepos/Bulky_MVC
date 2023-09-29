@@ -135,7 +135,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 			{
                 // it is a regular user so we need to make him pay
                 //Stripe Logic
-                string domain = "https://localhost:7261/";
+                string domain = Request.Scheme+ "://"+ Request.Host.Value +"/";
                 var options = new SessionCreateOptions
                 {
                     SuccessUrl = domain+$"Customer/ShoppingCart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",

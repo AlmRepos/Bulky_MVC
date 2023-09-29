@@ -148,7 +148,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             VM.OrderHeader = _unitOfWork.OrderHeader.GetOne(o => o.Id == VM.OrderHeader.Id, includeproperties: "ApplicationUser");
             VM.OrderDetails = _unitOfWork.OrderDetail.GetAll(o => o.OrderHeaderId == VM.OrderHeader.Id, includeproperties: "Product");
 
-            string domain = "https://localhost:7261/";
+            string domain = Request.Scheme + "://" + Request.Host.Value + "/";
             var options = new SessionCreateOptions
             {
                 SuccessUrl = domain + $"Admin/Order/PaymentConfirmation?id={VM.OrderHeader.Id}",
